@@ -644,7 +644,7 @@ Procedure ICheckOrCreateChartOfCharacteristicTypesObjectsAtServer(ObjectName, Va
                 EndTmpl = "</TypeDescription>";
                 
                 ResultTypeDescription = Row[Column.Name];
-                If Not StrStartsWith(ResultTypeDescription, StartTmpl) Then
+                If Not StrStartsWith(ResultTypeDescription, StartTmpl) Then 
                     ResultTypeDescription = StartTmpl + ResultTypeDescription + EndTmpl;
                 EndIf;
                 
@@ -1779,6 +1779,9 @@ EndFunction
 
 &AtServer
 Function GetObjectLinkFromObjectURL(ObjectURL)
+	If Left(ObjectURL, 16) = "FindByAttribute:" Then
+		Return GetObjectLinkByAttributeString(ObjectURL);
+	EndIf;
 	Five = 5;
 	Nine = 9;
 	Eleven = 11;

@@ -8,8 +8,8 @@
 
 ## BDD for 1С:Enterprise
 
-* Текущий **мажорный** релиз [1.2.041.1](https://github.com/Pr-Mex/vanessa-automation/releases/tag/1.2.041.1)
-* Текущий **минорный** релиз [1.2.041.1](https://github.com/Pr-Mex/vanessa-automation/releases/tag/1.2.041.1)
+* Текущий **мажорный** релиз [1.2.042.1](https://github.com/Pr-Mex/vanessa-automation/releases/tag/1.2.042.1)
+* Текущий **минорный** релиз [1.2.042.1](https://github.com/Pr-Mex/vanessa-automation/releases/tag/1.2.042.1)
 * Разработка ведется в ветке [Develop](https://github.com/Pr-Mex/vanessa-automation/tree/develop).
 * [Обсудить Ванессу](https://t.me/testspro1c) в телеграм группе, и обсудить всё, что связано с тестированием в 1С.
 * [Подписаться на новости о проекте](https://t.me/VanessaAutomation) в телеграм канале.
@@ -37,9 +37,11 @@
 * [Суровая практика BDD или: BDDSM-практики, или 50 оттенков желтого.](https://infostart.ru/public/1173711/)
 * [Vanessa, видеоинструкции для web-клиента](https://infostart.ru/public/1243801/)
 * [Генерация сценариев тестирования внешних печатных форм средствами Vanessa Automation](https://infostart.ru/public/1250707/)
-* [Тестирование серверного поведения с Vanessa Automation](https://infostart.ru/1c/articles/1283198/)
+* [Тестирование серверного поведения с Vanessa Automation. Инициатор данных.](https://infostart.ru/1c/articles/1283198/)
 * [Практика применения DevOps. Тестирование](https://infostart.ru/1c/articles/1342422/)
 * [Как настроить тестирование с Vanessa Automation и Gitlab с нуля](https://habr.com/ru/companies/samolet/articles/803345/)
+* [Как убить трех зайцев одним сценарием: опыт использования Vanessa-Automation](https://habr.com/ru/companies/croc/articles/861134/)
+* [Леонид Паутов, Анастасия Андриянова. Промышленное тестирование конфигураций в 1С](https://infostart.ru/1c/articles/2299156/)
 
 ## СППР + Vanessa Automation
 
@@ -59,6 +61,10 @@
 * [Виктор Ермаков. Как изменялся механизм формирования текстовых авто-инструкций. Мастер класс по созданию красивой инструкции.](https://youtu.be/ofMvDX6kIBg)
 * [Евгений Исаев. Подход к автоматизации тестирования 1С. Remote API for testing (RAT).](https://youtu.be/ugrzirGXq1U)
 * [SoftOnIt. Кружок 1С #8 Тестирование 1С, с помощью "vanessa-automation".](https://www.youtube.com/watch?v=NIY9HdO5Xc0)
+* [Митап «Запускаем дымовые тесты с помощью Vanessa-Automation»](https://youtu.be/FQLX8TlpGvo)
+* [Андрей Хашкин. Опыт применения Vanessa-Automation и других инструментов для обучения и тестирования](https://www.youtube.com/watch?v=v3FKzo86c8A)
+* [Леонид Паутов, Анастасия Андриянова. Промышленное тестирование конфигураций в 1С](https://infostart.ru/video/w2299237/)
+* [Александр Кунташов. Лучшие практики разработки сценариев на Vanessa Automation, которые должен знать каждый тимлид QA](https://vkvideo.ru/video-42867005_456240497)
 
 ## Курсы
 * Бесплатные
@@ -67,9 +73,29 @@
 * Платные
    - [Сценарное тестирование в 1С: настройка и практика использования](https://xn----1-bedvffifm4g.xn--p1ai/courses/1c-testing-qa-2022/)
    - [Тестирование в 1С - от простого к сложному](https://silverbulleters.org/courses-bbd)
+   - [Автоматизированное тестирование в 1С. Онлайн-курс](https://infostart.ru/va-course)
+   - [Тестирование в 1С и создание документации (c использованием Vanessa-Automation)](https://uc1.1c.ru/course/testirovanie-v-1s-i-sozdanie-dokumentatsii-c-ispolzovaniem-vanessa-automation)
 
 ## Как стать контрибьютором (предложить свои доработки) проекта?
 * Об этом рассказано [в этой статье](https://infostart.ru/public/1092009/)
+
+## Рекомендуемая концепция написания тестовых сценариев
+   1. Надо разделять тестирование форм и тестирование движений документов.
+   1. Для тестирования движений лучше использовать так называемые "цепочки документов".
+      * Документы заранее созданы в эталонной базе и они непроведены
+	  * Сценарий проводит документы, распроводит документы программно, без открытия формы.
+	  * После окончания выполнения сценарий распроводит все документы и тем самым приводит базы в эталонное состояние.
+	  * Результат проведения проверяется программно с помощью заранее сохраненных вариантов отчетов.
+	  * Пример
+	  ```Gherkin
+      И я отменяю проведение всех документов этого сценария по их навигационным ссылкам (расширение)
+      И я выполняю проведение документа по навигационной ссылке "e1cib/data/Документ.ПриобретениеТоваровУслуг?ref=a4224cedfb3d3b3611ee20bd70c73364" (расширение)
+      И я выполняю проведение документа по навигационной ссылке "e1cib/data/Документ.ЗаказКлиента?ref=a4224cedfb3d3b3611ee20bd70c7334f" (расширение)
+      И вариант отчета "ОстаткиИДоступностьТоваров" "Остатки и доступность товаров" равен макету "ЭталонноеЗначениеОтчета" (расширение)
+      И я отменяю проведение всех документов этого сценария по их навигационным ссылкам (расширение)
+	  ```
+   1. При тестировании форм нужно максимально использовать возможность "накликивать" сценарий.
+   1. Там где это возможно надо использовать подсценарии, что уменшить количство дублирования строк в сценариях тестирования.
 
 ## Сборка из исходников
 
@@ -82,16 +108,32 @@
 3. Для запуска сборки epf из исходников надо запустить **Compile.bat**.
 4. [Скрипты по сборке/разборке файлов](https://github.com/Pr-Mex/ExternalModulesConverterFor1C).
 
-Чтобы зафиксировать изменения epf файлов, нужно запустить **Decompile.bat**.
+Если вы дорабатываете Vanessa Automation и хотите зафиксировать изменения epf файлов, нужно запустить **Decompile.bat**.
 
 ## Установка через OneScript
 Для обычной сборки
 
-* opm install vanessa-automation
+* Для текущей мажорной версии (например 1.2.042.1)
+```
+opm install vanessa-automation
+```
+
+* Для текущей релизной версии (например 1.2.042.10)
+```
+opm install vanessa-automation@SNAPSHOT
+```
 
 Для сборки VASingle.
 
-* opm install vanessa-automation-single
+* Для текущей мажорной версии (например 1.2.042.1)
+```
+opm install vanessa-automation-single
+```
+
+* Для текущей релизной версии (например 1.2.042.10)
+```
+opm install vanessa-automation-single@SNAPSHOT
+```
 
 VASingle отличается от обычной сборки тем, что поставляется в виде одного epf файла, который по функциональности полностью совпадает с основной сборкой.
 
@@ -127,7 +169,7 @@ VASingle отличается от обычной сборки тем, что п
     И при нажатии кнопки "Запустить сценарии" я вижу автоматизированный запуск обработок с признаком "pending" (ожидает реализации)
 ```
 
-### Вариант использования без интерактивного режима
+### Вариант использования без интерактивного режима (устаревшее, использовалось для обычных форм)
 
 Фактически данный вариант использования представляет собой следующий порядок действий:
 
@@ -185,10 +227,12 @@ Feature файлы могут писать все участники коман�
 * **СписокТеговОтбор** - массив текстовых тэгов для запуска проверки поведения по сценариям, содержащим любой из указанных тэгов
 * и другие
 
-[Примеры JSON файлов](https://github.com/Pr-Mex/vanessa-automation/tree/develop/tools/JSON)
-[Описание всех параметров VAParams.json (ru)](https://github.com/Pr-Mex/vanessa-automation/blob/develop/docs/JsonParams/JsonParamsRU.md)
-[Описание всех параметров VAParams.json (en)](https://github.com/Pr-Mex/vanessa-automation/blob/develop/docs/JsonParams/JsonParamsEN.md)
-[Параметры, которые раньше можно было передавать только в командной строке, но теперь можно передавать в файле VAParams.json](https://github.com/Pr-Mex/vanessa-automation/blob/develop/docs/CommandSetting/CommandSetting.md)
+Ссылки
+* [Подробно про запуск Vanessa Automation из командной строки](https://github.com/Pr-Mex/vanessa-automation/blob/develop/docs/CommandSetting/CommandSetting.md)
+* [Примеры JSON файлов](https://github.com/Pr-Mex/vanessa-automation/tree/develop/tools/JSON)
+* [Описание всех параметров VAParams.json (ru)](https://github.com/Pr-Mex/vanessa-automation/blob/develop/docs/JsonParams/JsonParamsRU.md)
+* [Описание всех параметров VAParams.json (en)](https://github.com/Pr-Mex/vanessa-automation/blob/develop/docs/JsonParams/JsonParamsEN.md)
+* [Параметры, которые раньше можно было передавать только в командной строке, но теперь можно передавать в файле VAParams.json](https://github.com/Pr-Mex/vanessa-automation/blob/develop/docs/CommandSetting/CommandSetting.md)
 
 
 Профиль запуска предназначен для простого консольного запуска, пример подобной командной строки выглядит так:
